@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/bump_sfx.wav-fbadc02bcbe32c24be6dbb8117dc734b.sample"
+
+[deps]
+
+source_file="res://Player/bump_sfx.wav"
+dest_files=[ "res://.import/bump_sfx.wav-fbadc02bcbe32c24be6dbb8117dc734b.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0
