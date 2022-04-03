@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/jingle_1.mp3-8b17223db3462af1328e8655f57d1c2a.mp3str"
+
+[deps]
+
+source_file="res://Pickups/jingle_1.mp3"
+dest_files=[ "res://.import/jingle_1.mp3-8b17223db3462af1328e8655f57d1c2a.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

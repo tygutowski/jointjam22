@@ -1,14 +1,14 @@
 extends KinematicBody2D
 
-<<<<<<< HEAD
+export(int) var bag_size
 onready var tween1 = get_node("Tween")
 onready var tween2 = get_node("Tween2")
 onready var ray = get_node("RayCast2D")
 onready var bag_parts = get_node("../BagParts")
 var tween_speed = 0.25
-
+var turn_direction = "none"
 var velocity = Vector2.ZERO
-
+var former_direction
 var tile_size = 16
 var can_move = true
 var direction = "none"
@@ -20,10 +20,11 @@ var inputs = {
 	"down": Vector2.DOWN,
 }
 
-func _ready():
+func time_manager_ready(level_num):
 	position = position.snapped(Vector2.ONE * tile_size) # set snapped position to the grid
 	position.x += tile_size/2
-	BagManager.make_bag(4)
+	position.y += tile_size/2
+	BagManager.time_manager_ready(level_num, bag_size)
 
 func _process(_delta):
 	direction = get_inputs() # direction is last input you pressed
@@ -35,19 +36,21 @@ func get_inputs():
 	return "none" # otherwise if theres no WASD input, return none
 
 func do_turn():
-	direction = get_inputs() # get direction
 	if can_move: # if allowed to move
-		if direction == "none": # if you dont move
+		turn_direction = get_inputs() # get direction
+		if turn_direction == "none": # if you dont move
 			return
 		else: # if you do move
-			ray.cast_to = inputs[direction] * tile_size # cast in the direction
+			$AnimationPlayer.play(turn_direction)
+			
+			ray.cast_to = inputs[turn_direction] * tile_size # cast in the direction
 			ray.force_raycast_update() # force update
-			if !ray.is_colliding(): # if there is nothing in the cast direction
-				move_tween(direction) # move using tween
-				BagManager.do_turn()
+			if ray.is_colliding(): # if there is nothing in the cast direction
+				cannot_move_tween(turn_direction)
 			else:
-				cannot_move_tween(direction)
-
+				move_tween(turn_direction) # move using tween
+				BagManager.do_turn(former_direction, position)
+				former_direction = turn_direction
 func move_tween(dir): # tween position between tiles
 	tween1.interpolate_property(self, "position", # change position
 	position, position + inputs[dir] * tile_size, # from position, to new position
@@ -70,38 +73,3 @@ func cannot_move_tween(dir):
 func tween_completed(_object, _key): # WHEN YOU FINISH MOVING, YOU CAN MOVE AGAIN
 	can_move = true
 	tween2.start()
-=======
-var size = 1
-var size_max = 2
-var size_min = .5
-
-var speed = 100
-var speed_mod = 1
-
-var velocity = Vector2.ZERO
-
-func _ready():
-	pass
-
-func get_input():
-	velocity = Vector2.ZERO
-	if Input.is_action_just_pressed("G"):
-		scale_player(0.8)
-	elif Input.is_action_just_pressed("H"):
-		scale_player(1.2)
-	var horizontal = Input.get_action_strength("right") - Input.get_action_strength("left")
-	var vertical = Input.get_action_strength("down") - Input.get_action_strength("up")
-	velocity = Vector2(horizontal, vertical)
-	velocity = velocity.normalized() * speed * speed_mod
-
-func _physics_process(_delta):
-	get_input()
-	velocity = move_and_slide(velocity)
-
-func scale_player(value):
-	size = max(size * value, size_min)
-	scale = Vector2(size, size)
-
-func scale_speed(value):
-	speed_mod = speed_mod * value
->>>>>>> 53226496767c5f95a0715c775bcc07b8ba4c6073

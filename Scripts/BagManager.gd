@@ -2,45 +2,72 @@ extends Node
 
 var bag_list = []
 
-onready var player = get_node("/root/Level1/Player")
-onready var bag_scene = preload("res://Bag/BagPart.tscn")
-onready var bag_parts = get_node("/root/Level1/BagParts")
+var player
+var bag_scene
+var bag_parts
+
+func time_manager_ready(level_num, size):
+	player = get_node("/root/Level" + str(level_num) + "/Player")
+	bag_scene = load("res://Bag/BagPart.tscn")
+	bag_parts = get_node("/root/Level" + str(level_num) + "/BagParts")
+	bag_list.clear()
+	make_bag(size)
 
 func make_bag(size):
-	for i in range(size):
-		add_bag_segment(1)
+	for _i in range(size):
+		add_bag_segment()
+	set_bag_textures()
 
-func move_bags():
-	var new_position = player.position
+func move_bags(dir, position):
+	var new_position = position
+	var new_rotation = 0
+	if dir == "up":
+		new_rotation = PI/2
+	elif dir == "down":
+		new_rotation = 3*PI/2
+	elif dir == "left":
+		new_rotation = 0
+	elif dir == "right":
+		new_rotation = PI
+
 	for segment in bag_list:
+		var temp_rotation = segment.get_node("Sprite").rotation
+		segment.get_node("Sprite").rotation = new_rotation
 		var tween = segment.get_node("Tween")
 		var temp_position = segment.position
 		tween.interpolate_property(segment, "position",
-		segment.position, new_position, .1,
+		segment.position, new_position, .25,
 		Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 		tween.start()
+		
+		new_rotation = temp_rotation
 		new_position = temp_position
-
-func add_bag_segment(bag_type):
-	print("adding bag segment of type: " + str(bag_type))
+func set_bag_textures():
+	for bag in bag_list:
+		if bag == bag_list[0]:
+			bag.get_node("Sprite").texture = load("res://Bag/bag_front.tres")
+		elif bag == bag_list[-1]:
+			bag.get_node("Sprite").texture = load("res://Bag/bag_back.tres")
+		else:
+			bag.get_node("Sprite").texture = load("res://Bag/bag_mid.tres")
+func add_bag_segment():
 	var image_path 
 	var new_bag = bag_scene.instance()
-	if bag_type == 0:
-		image_path = "res://Bag/front.png"
-	elif bag_type == 1:
-		image_path = "res://Bag/mid.png"
-	elif bag_type == 2:
-		image_path = "res://Bag/back.png"
-	var image = Image.new()
-	var texture = ImageTexture.new()
-	var error = image.load(image_path)
-	if error != OK:
-		print('error')
-	texture.create_from_image(image)
-	new_bag.get_node("Sprite").texture = texture
+	new_bag.get_node("Sprite").texture = load("res://Bag/bag_back.tres")
+	if len(bag_list) != 0:
+		new_bag.position = bag_list[-1].position
+	else:
+		new_bag.position = player.position
+		new_bag.position.x -= 16
 	bag_list.append(new_bag)
 	bag_parts.add_child(new_bag)
-	
-func do_turn():
+	set_bag_textures()
+
+func remove_bag_segment():
+	if len(bag_list) >= 2:
+		bag_list.remove(bag_list[-1])
+
+func do_turn(direction, position):
 	if is_instance_valid(player):
-		move_bags()
+		move_bags(direction, position)
+		bag_list[-1].get_node("Sprite").rotation = bag_list[-2].get_node("Sprite").rotation
