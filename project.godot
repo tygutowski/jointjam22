@@ -17,6 +17,7 @@ run/main_scene="res://Levels/Menu.tscn"
 
 TimeManager="*res://Scripts/TimeManager.gd"
 BagManager="*res://Scripts/BagManager.gd"
+MusicPlayer="*res://MusicPlayer.tscn"
 
 [display]
 
