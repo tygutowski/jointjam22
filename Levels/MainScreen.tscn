@@ -1,0 +1,91 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://Levels/Font.tres" type="DynamicFont" id=1]
+[ext_resource path="res://titleidea.png" type="Texture" id=2]
+[ext_resource path="res://Levels/normal_button.tres" type="StyleBox" id=3]
+[ext_resource path="res://Levels/MainScreen.gd" type="Script" id=4]
+[ext_resource path="res://VCRosdNEUE.ttf" type="DynamicFontData" id=6]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.196381, 0.207577, 0.386719, 1 )
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0.121569, 0.133333, 0.294118, 1 )
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 48
+use_mipmaps = true
+font_data = ExtResource( 6 )
+
+[node name="TextureRect" type="TextureRect"]
+margin_right = 40.0
+margin_bottom = 40.0
+texture = ExtResource( 2 )
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" type="Button" parent="."]
+margin_left = 12.8671
+margin_top = 277.337
+margin_right = 227.867
+margin_bottom = 348.337
+custom_styles/hover = SubResource( 1 )
+custom_styles/pressed = SubResource( 2 )
+custom_styles/normal = ExtResource( 3 )
+custom_fonts/font = ExtResource( 1 )
+text = "Start"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="credit" type="Button" parent="."]
+margin_left = 239.569
+margin_top = 277.337
+margin_right = 454.569
+margin_bottom = 348.337
+custom_styles/hover = SubResource( 1 )
+custom_styles/pressed = ExtResource( 3 )
+custom_styles/normal = ExtResource( 3 )
+custom_fonts/font = ExtResource( 1 )
+text = "Credits"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="blue" type="Label" parent="."]
+margin_left = 25.5295
+margin_top = 20.4236
+margin_right = 448.53
+margin_bottom = 68.4236
+custom_fonts/font = SubResource( 3 )
+custom_colors/font_color = Color( 0.345098, 0.45098, 0.752941, 1 )
+text = "blue "
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="collar robber" type="Label" parent="."]
+margin_left = 133.775
+margin_top = 20.4236
+margin_right = 556.775
+margin_bottom = 68.4236
+custom_fonts/font = ExtResource( 1 )
+text = "collar bandit"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
+[connection signal="pressed" from="credit" to="." method="_on_credit_pressed"]

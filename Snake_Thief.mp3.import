@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Snake_Thief.mp3-18dd1c7a7864ba93578947f20bca53e4.mp3str"
+
+[deps]
+
+source_file="res://Snake_Thief.mp3"
+dest_files=[ "res://.import/Snake_Thief.mp3-18dd1c7a7864ba93578947f20bca53e4.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0
